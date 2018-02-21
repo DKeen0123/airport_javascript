@@ -11,6 +11,7 @@ describe('Airport', function() {
 
   describe('land', function() {
     it('returns a plane', function() {
+      spyOn(Math, 'random').and.returnValue(0.1)
       expect(airport.land(plane)).toEqual(plane);
     });
 
@@ -25,9 +26,7 @@ describe('Airport', function() {
     });
 
     it('raises an error if weather is stormy', function() {
-      // weather.isStormy.and.callFake(function() {
-      //   return true;
-      // });
+      spyOn(Math, 'random').and.returnValue(0.8)
       expect(function() {
         airport.land(plane);
       }).toThrow('The weather is too bad!');
@@ -35,24 +34,34 @@ describe('Airport', function() {
   });
 
   describe('take off', function() {
-    it('returns a plane when plane takes off', function() {
-      airport.land(plane);
-      expect(airport.takeOff(plane)).toEqual(`${plane} has taken off`);
-    });
+    describe('good weather', function() {
+      beforeEach(function() {
+        spyOn(Math, 'random').and.returnValue(0.1)
+      });
+      it('returns a plane when plane takes off', function() {
+        airport.land(plane);
+        expect(airport.takeOff(plane)).toEqual(`${plane} has taken off`);
+      });
 
-    it('removes a plane from hangar', function() {
-      airport.land(plane);
-      airport.takeOff(plane);
-      expect(airport.hangar).not.toContain(plane);
-    });
-
-    it('raises an error if plane isnt in hangar', function() {
-      expect(function() {
+      it('removes a plane from hangar', function() {
+        airport.land(plane);
         airport.takeOff(plane);
-      }).toThrow('This plane is not here!');
+        expect(airport.hangar).not.toContain(plane);
+      });
+
+      it('raises an error if plane isnt in hangar', function() {
+        expect(function() {
+          airport.takeOff(plane);
+        }).toThrow('This plane is not here!');
+      });
     });
+
   });
+
   describe('hangar', function() {
+    beforeEach(function(){
+      spyOn(Math, 'random').and.returnValue(0.1)
+    });
     it('returns an empty array when instantiated', function() {
       expect(airport.hangar).toEqual([]);
     });
