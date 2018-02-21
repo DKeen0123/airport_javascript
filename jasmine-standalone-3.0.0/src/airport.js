@@ -4,7 +4,7 @@ var Airport = function() {
 
 Airport.prototype.land = function(plane) {
   if (plane.isLanded()) {
-    return 'This plane has already landed';
+    throw 'This plane has already landed';
   } else {
     plane.land();
     this.hangar.push(plane);
