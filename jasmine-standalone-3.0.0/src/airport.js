@@ -1,7 +1,6 @@
 var Airport = function() {
   this.hangar = [];
   this.weather = new Weather();
-  console.log(this.weather.isStormy());
 };
 
 Airport.prototype.land = function(plane) {
@@ -19,7 +18,6 @@ Airport.prototype.land = function(plane) {
 
 Airport.prototype.takeOff = function(plane) {
   var index = this.hangar.indexOf(plane);
-  console.log(index);
   if (index === -1) {
     throw 'This plane is not here!';
   }
