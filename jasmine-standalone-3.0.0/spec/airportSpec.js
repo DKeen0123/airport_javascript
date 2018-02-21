@@ -1,10 +1,12 @@
 describe('Airport', function() {
   var airport;
   var plane;
+  var weather;
 
   beforeEach(function() {
     airport = new Airport();
     plane = jasmine.createSpyObj('plane', ['isLanded', 'land']);
+    weather = jasmine.createSpyObj('weather', ['isStormy']);
   });
 
   describe('land', function() {
@@ -21,6 +23,15 @@ describe('Airport', function() {
         airport.land(plane);
       }).toThrow('This plane has already landed');
     });
+
+    it('raises an error if weather is stormy', function() {
+      // weather.isStormy.and.callFake(function() {
+      //   return true;
+      // });
+      expect(function() {
+        airport.land(plane);
+      }).toThrow('The weather is too bad!');
+    });
   });
 
   describe('take off', function() {
@@ -33,6 +44,12 @@ describe('Airport', function() {
       airport.land(plane);
       airport.takeOff(plane);
       expect(airport.hangar).not.toContain(plane);
+    });
+
+    it('raises an error if plane isnt in hangar', function() {
+      expect(function() {
+        airport.takeOff(plane);
+      }).toThrow('This plane is not here!');
     });
   });
   describe('hangar', function() {
